@@ -1,14 +1,21 @@
-// #[macro_use]
+extern crate konpaira;
 extern crate combine;
-use combine::{many,Parser};
-use combine::char::letter;
+
+use std::io;
+use combine::State;
 
 fn main() {
-    println!("Hello, world!");
-}
-
-#[test]
-fn readme() {
-    let result = many(letter()).parse("hello, world");
-    assert_eq!(result, Ok(("hello".to_string(), ", world")));
+    println!("start");
+    loop {
+        let mut buf = String::new();
+        let _ = match io::stdin().read_line(&mut buf) {
+            Ok(n) => n,
+            Err(e) => {println!("{}", e.to_string()); return},
+        };
+        let (ans, rem) = match konpaira::expr(State::<&str>::new(&buf.trim())) {
+            Ok((a, r)) => (a, r),
+            Err(e) => {println!("{}", e.to_string()); continue},
+        };
+        println!("{:?} {:?}", ans, rem);
+    }
 }
