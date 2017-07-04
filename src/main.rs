@@ -12,10 +12,10 @@ fn main() {
             Ok(n) => n,
             Err(e) => {println!("{}", e.to_string()); return},
         };
-        let (ans, rem) = match konpaira::expr(State::<&str>::new(&buf.trim())) {
+        let (ans, _) = match konpaira::expr(State::<&str>::new(&buf.trim())) {
             Ok((a, r)) => (a, r),
             Err(e) => {println!("{}", e.to_string()); continue},
         };
-        println!("{:?} {:?}", ans, rem);
+        println!("{:?}", ans);
     }
 }

@@ -11,7 +11,7 @@ pub enum AST {
     Add (Box<AST>, Box<AST>),
     Sub (Box<AST>, Box<AST>),
     Mul (Box<AST>, Box<AST>),
-    Dev (Box<AST>, Box<AST>)
+    Div (Box<AST>, Box<AST>)
 }
 
 struct P<I>(PhantomData<fn(I) -> I>);
@@ -40,7 +40,7 @@ impl<I> P<I> where I: Stream<Item=char> {
             .map(|c|
                  move |l, r| match c {
                      '*' => AST::Mul( Box::new(l), Box::new(r) ),
-                     '/' => AST::Dev( Box::new(l), Box::new(r) ),
+                     '/' => AST::Div( Box::new(l), Box::new(r) ),
                      _ => unreachable!()
                  });
         chainl1(parser(P::<I>::factor), op).parse_stream(input)
